@@ -13,6 +13,7 @@ import com.benjamin.springbootmc.domain.Cidade;
 import com.benjamin.springbootmc.domain.Cliente;
 import com.benjamin.springbootmc.domain.Endereco;
 import com.benjamin.springbootmc.domain.Estado;
+import com.benjamin.springbootmc.domain.ItemPedido;
 import com.benjamin.springbootmc.domain.Pagamento;
 import com.benjamin.springbootmc.domain.PagamentoComBoleto;
 import com.benjamin.springbootmc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.benjamin.springbootmc.repositories.CidadeRepository;
 import com.benjamin.springbootmc.repositories.ClienteRepository;
 import com.benjamin.springbootmc.repositories.EnderecoRepository;
 import com.benjamin.springbootmc.repositories.EstadoRepository;
+import com.benjamin.springbootmc.repositories.ItemPedidoRepository;
 import com.benjamin.springbootmc.repositories.PagamentoRepository;
 import com.benjamin.springbootmc.repositories.PedidoRepository;
 import com.benjamin.springbootmc.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class SpringbootmcApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itempedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootmcApplication.class, args);
@@ -114,6 +118,19 @@ public class SpringbootmcApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itempedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));		
 	}
 	
 }
